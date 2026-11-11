@@ -6,9 +6,9 @@ A small task-status sidebar for DeepSeek Harness. See observable model activity,
 
 No additional model calls, backend service, prompt injection, or changes to tool execution.
 
-![Completed turn in a real DSH session](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/dsh-complete.png)
+![20-second DSH session: model wait, tool call, output and completion](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
-The screenshot shows a real DSH session driven by a local test model, using the interface's earlier working name. This project's package is `dsh-task-pulse`; it is unrelated to the existing third-party `dsh-pulse` package.
+The approximately 20-second recording uses a local test model and delayed tool in a real DSH session. It demonstrates observable status transitions, not real-model response speed. [Static screenshot](docs/dsh-complete.png). This project's package is `dsh-task-pulse`; it is unrelated to the existing third-party `dsh-pulse` package.
 
 ## Install the preview
 
@@ -62,6 +62,8 @@ Run `npm run preview` for an interactive preview using simulated events and the 
 13 behavior tests cover concurrency, reused call IDs, turn outcomes, waiting precedence, quiet periods, stream events, bounded history, failure handling, session isolation, reconnect replay, and subscription cleanup. Browser integration exercised real DSH events with a keyless local model and delayed tool. See [verification details and limitations](docs/verification.md).
 
 Report issues at [GitHub Issues](https://github.com/Yeti11H/dsh-task-pulse/issues), including DSH version and expected versus observed behavior.
+
+For a first trial, use the [10-minute checklist](docs/try-it.md) (Chinese) and the [bilingual trial feedback form](https://github.com/Yeti11H/dsh-task-pulse/issues/new?template=trial-feedback.yml).
 
 ## License
 

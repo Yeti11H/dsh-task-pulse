@@ -6,9 +6,9 @@
 
 不额外调用模型，不新增后端服务，不向 Agent 注入提示词，不改变工具执行。
 
-![真实 DSH 测试中的完成状态](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/dsh-complete.png)
+![20 秒真实 DSH 会话演示：模型等待、工具调用、输出和完成](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
-截图来自本地测试模型触发的真实 DSH 会话，使用发布前的界面名称。项目包名为 `dsh-task-pulse`，与他人的 `dsh-pulse` 项目无关。
+约 20 秒，使用本地测试模型和延时工具录制真实 DSH 会话；展示模型等待、工具等待、接收输出和完成状态，不代表真实模型响应速度。[静态截图](docs/dsh-complete.png)。项目包名为 `dsh-task-pulse`，与他人的 `dsh-pulse` 项目无关。
 
 ## 安装
 
@@ -99,6 +99,8 @@ preview/          可交互的模拟事件预览
 ```
 
 ## 反馈与发布
+
+找朋友试用时，直接分享 [10 分钟试用清单](docs/try-it.md)，包含安装、测试场景、卸载和反馈格式。也可 [填写试用反馈](https://github.com/Yeti11H/dsh-task-pulse/issues/new?template=trial-feedback.yml)。
 
 通过 [Issues](https://github.com/Yeti11H/dsh-task-pulse/issues) 报告问题。请提供 DSH 版本、使用的网页或桌面环境、期望状态和实际状态；分享日志或截图前检查敏感信息。
 

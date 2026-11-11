@@ -1,0 +1,58 @@
+name: Trial feedback / 试用反馈
+description: Report installation, status accuracy, and usefulness after trying DSH Task Pulse.
+title: '[Trial] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying the preview. Tested target: DSH 0.2.2-rc.1 web profile.
+        感谢试用。请不要上传 API Key、Token、完整会话日志、推理正文或私人项目文件。
+  - type: input
+    id: environment
+    attributes:
+      label: OS and browser / 系统与浏览器
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Node.js, DSH, profile, and plugin versions / 版本
+      placeholder: Node 24.x; DSH 0.2.2-rc.1; web; dsh-task-pulse 0.1.0
+    validations:
+      required: true
+  - type: checkboxes
+    id: scenarios
+    attributes:
+      label: Scenarios actually tested / 实际测试的场景
+      options:
+        - label: Installation and opening / 安装与打开
+        - label: Model, tools, and completion / 模型、工具与完成
+        - label: Refresh and preferences / 刷新与设置
+        - label: Session switching / 切换会话
+        - label: User interaction or approval / 用户交互或授权
+        - label: Cancellation / 取消
+        - label: Concurrent tool calls / 并行工具
+        - label: Quiet reminder / 静默提醒
+        - label: Disconnect and reconnect / 断线重连
+  - type: textarea
+    id: result
+    attributes:
+      label: Steps, expected status, actual status / 步骤与结果
+      description: State what passed, failed, or was not triggered. Include redacted screenshots if helpful.
+    validations:
+      required: true
+  - type: dropdown
+    id: usefulness
+    attributes:
+      label: Usefulness / 实用性
+      options:
+        - Not enough use yet / 暂无法判断
+        - 1 - Not useful / 没帮助
+        - '2'
+        - '3'
+        - '4'
+        - 5 - Very useful / 很有帮助
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Most useful improvement / 最希望改进的一点
