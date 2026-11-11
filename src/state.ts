@@ -88,7 +88,7 @@ export function reduceEvent(state: PulseState, input: unknown): PulseState {
       const error = isError ? errorExcerpt([text(failure.name, 'ToolError'), text(failure.code)].filter(Boolean).join(': ')) : state.error;
       return { ...touched, tools, phase: tools.length ? 'tools' : 'preparing', error,
         completedTools: state.completedTools + (isError ? 0 : 1),
-        recent: addRecent(state, { id: id || `event-${event.seq}`, kind: 'tool',
+        recent: addRecent(state, { id: `tool-${id}-${event.seq ?? at}`, kind: 'tool',
           name: tool?.name ?? text(message.name, 'tool'), at,
           startedAt: tool?.startedAt ?? null, outcome: isError ? 'error' : 'ok' }) };
     }

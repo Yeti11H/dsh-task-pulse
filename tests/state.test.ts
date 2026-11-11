@@ -27,6 +27,14 @@ test('uses structured completed, aborted, and failed DSH end reasons', () => {
     assert.notEqual(reduceEvent(started(), event('turn/end', 500, { reason: { kind } })).phase, 'complete');
   }
 });
+test('reused provider call ids in later turns keep distinct activity identities', () => {
+  let state = started();
+  state = reduceEvent(state, event('tool/result', 200, { message: { toolCallId: 'reused' } }));
+  state = reduceEvent(state, event('turn/start', 300, { turn: 2 }));
+  state = reduceEvent(state, event('tool/result', 400, { message: { toolCallId: 'reused' } }));
+  assert.equal(state.recent.length, 2);
+  assert.notEqual(state.recent[0].id, state.recent[1].id);
+});
 test('quiet periods are uncertain and known waiting states take precedence', () => {
   const state = started();
   assert.equal(displayStatus(state, { ...running, now: 120100 }), 'quiet');
