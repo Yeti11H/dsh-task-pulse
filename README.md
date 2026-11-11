@@ -10,11 +10,18 @@
 
 截图来自本地测试模型触发的真实 DSH 会话，使用发布前的界面名称。项目包名为 `dsh-task-pulse`，与他人的 `dsh-pulse` 项目无关。
 
-## 安装本地插件包
+## 安装
 
 需要 Node.js **24.9.0 或更高版本**。首版兼容范围限定为 **DSH 0.2.2-rc.1**，其他版本尚未验证。DSH 本身处于开发者预览阶段。
 
-先从 [GitHub Releases](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0) 下载 `dsh-task-pulse-0.1.0.tgz`，在下载目录执行：
+已发布到 [npm](https://www.npmjs.com/package/dsh-task-pulse)，可直接安装指定版本：
+
+```powershell
+npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add dsh-task-pulse@0.1.0
+npx @deepseek-ai/dsh@0.2.2-rc.1 web
+```
+
+也可以从 [GitHub Releases](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0) 下载 `dsh-task-pulse-0.1.0.tgz`，在下载目录执行：
 
 ```powershell
 # 网页版

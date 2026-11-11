@@ -14,7 +14,14 @@ The screenshot shows a real DSH session driven by a local test model, using the 
 
 Requires Node.js **>=24.9.0**. Tested against **DSH 0.2.2-rc.1, web profile** on Windows. Other versions and the desktop profile have not been verified.
 
-Download `dsh-task-pulse-0.1.0.tgz` from [GitHub Releases](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0), then run in its directory:
+Install the published [npm package](https://www.npmjs.com/package/dsh-task-pulse):
+
+```powershell
+npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add dsh-task-pulse@0.1.0
+npx @deepseek-ai/dsh@0.2.2-rc.1 web
+```
+
+Alternatively, download `dsh-task-pulse-0.1.0.tgz` from [GitHub Releases](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0), then run in its directory:
 
 ```powershell
 npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add ./dsh-task-pulse-0.1.0.tgz

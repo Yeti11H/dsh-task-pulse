@@ -4,6 +4,15 @@ A lightweight task-status sidebar for DeepSeek Harness: observable model activit
 
 ## Install
 
+Install the published npm package:
+
+```powershell
+npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add dsh-task-pulse@0.1.0
+npx @deepseek-ai/dsh@0.2.2-rc.1 web
+```
+
+Or use the downloadable package:
+
 Download `dsh-task-pulse-0.1.0.tgz` from the assets below and run:
 
 ```powershell
