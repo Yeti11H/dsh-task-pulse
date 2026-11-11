@@ -1,25 +1,31 @@
-# DSH Pulse
+# DSH Task Pulse
+
+[English](README.en.md) · 简体中文 · [下载安装包](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0)
 
 一个轻量的 DeepSeek Harness 任务状态侧栏：看清当前活动、最近完成的操作、等待用户的状态，以及长时间没有新活动的情况。
 
 不额外调用模型，不新增后端服务，不向 Agent 注入提示词，不改变工具执行。
 
+![真实 DSH 测试中的完成状态](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/dsh-complete.png)
+
+截图来自本地测试模型触发的真实 DSH 会话，使用发布前的界面名称。项目包名为 `dsh-task-pulse`，与他人的 `dsh-pulse` 项目无关。
+
 ## 安装本地插件包
 
 需要 Node.js **24.9.0 或更高版本**。首版兼容范围限定为 **DSH 0.2.2-rc.1**，其他版本尚未验证。DSH 本身处于开发者预览阶段。
 
-在安装包所在目录执行以下命令。插件尚未发布到 npm，请使用文件路径安装。
+先从 [GitHub Releases](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0) 下载 `dsh-task-pulse-0.1.0.tgz`，在下载目录执行：
 
 ```powershell
 # 网页版
-npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add ./dsh-pulse-0.1.0.tgz
+npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add ./dsh-task-pulse-0.1.0.tgz
 npx @deepseek-ai/dsh@0.2.2-rc.1 web
 ```
 
 如果你已经有同版本的 `dsh` 命令，也可以使用：
 
 ```powershell
-dsh plugin --profile web add ./dsh-pulse-0.1.0.tgz
+dsh plugin --profile web add ./dsh-task-pulse-0.1.0.tgz
 ```
 
 安装后重新启动 DSH，在一个会话中展开右侧栏，点击添加标签页，在工具列表中选择 **Pulse · 任务状态**（英文为 **Pulse · Task status**）。
@@ -85,11 +91,11 @@ tests/            行为验证
 preview/          可交互的模拟事件预览
 ```
 
-## 发布到社区
+## 反馈与发布
 
-先将源码上传到自己的 GitHub 仓库，添加 `dsh-plugin` topic。选择可用的 npm 包名后，同步修改 `package.json`、`cordis.patch.yml`、浏览器模块 id 和侧栏注册 id，再构建并验证安装包。包名 `dsh-pulse` 在本地使用，不表示已在 npm 预留。
+通过 [Issues](https://github.com/Yeti11H/dsh-task-pulse/issues) 报告问题。请提供 DSH 版本、使用的网页或桌面环境、期望状态和实际状态；分享日志或截图前检查敏感信息。
 
-发布 npm 包后，用户可以按实际包名安装。社区目录通常收录仓库或包地址，具体以各目录提交规则为准。本项目没有自动上传 GitHub、npm 或任何插件目录。
+首版为预览版。兼容性和验证边界见 [验证记录](docs/verification.md)，版本附件以 [Releases](https://github.com/Yeti11H/dsh-task-pulse/releases) 为准。
 
 ## License
 

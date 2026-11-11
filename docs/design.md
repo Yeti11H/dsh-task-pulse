@@ -1,4 +1,4 @@
-# DSH Pulse design
+# DSH Task Pulse design
 
 Date: 2026-11-11
 

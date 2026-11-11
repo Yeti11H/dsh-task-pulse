@@ -14,8 +14,8 @@ import { PulseView } from './view.tsx';
 import { initialState } from './state.ts';
 
 export const inject = ['slots', 'sidebarRightTabs', 'sessions', 'connection', 'locale', 'uiSession'];
-const NS = 'dsh-pulse';
-const SETTING = 'dsh-pulse.quiet-seconds.v1';
+const NS = 'dsh-task-pulse';
+const SETTING = 'dsh-task-pulse.quiet-seconds.v1';
 const DEFAULT_THRESHOLD = 120;
 const CHOICES = [30, 60, 120, 300];
 const emptyState = initialState();

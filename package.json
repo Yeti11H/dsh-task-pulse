@@ -1,9 +1,22 @@
 {
-  "name": "dsh-pulse",
+  "name": "dsh-task-pulse",
   "version": "0.1.0",
   "description": "A small task-status sidebar for DeepSeek Harness. See activity, waiting states, errors, and quiet periods without extra model calls.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yeti11H/dsh-task-pulse.git"
+  },
+  "homepage": "https://github.com/Yeti11H/dsh-task-pulse#readme",
+  "bugs": {
+    "url": "https://github.com/Yeti11H/dsh-task-pulse/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "next"
+  },
   "keywords": [
     "dsh-plugin",
     "deepseek-harness",
@@ -30,6 +43,7 @@
     "icon.svg",
     "docs/verification.md",
     "README.md",
+    "README.en.md",
     "LICENSE"
   ],
   "icon": "./icon.svg",
