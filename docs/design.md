@@ -8,7 +8,7 @@ Implement the task-status sidebar discussed and approved in this chat. Show what
 
 ## Scope
 
-- One installable DSH bundle with a Host observer and a Client sidebar.
+- One installable DSH bundle with an inert Host entry and a Client sidebar, reusing DSH's existing authenticated Host observation and Client event bridge.
 - Read public lifecycle, tool, streaming, and interaction events without intercepting execution.
 - Track sessions independently and represent simultaneous tool calls separately.
 - Derive descriptions from structured events; make no extra model calls.
@@ -24,10 +24,10 @@ No hidden-thought inspection, percentage completion, automatic cancellation/retr
 ## Architecture
 
 1. A pure state reducer consumes normalized events and creates bounded session snapshots.
-2. A Host adapter translates public DSH events, owns observer lifetimes, and exposes read-only snapshots through the supported Client transport.
+2. A Client adapter reads DSH's supported Session Controller event source and connection status. DSH already owns Host observation, history, and authenticated transport, so no additional Host service is needed.
 3. A Client sidebar subscribes while open, displays activity, and computes elapsed time locally. Connection state remains separate from execution state.
 
-The reducer imports no DSH modules. The view knows only the snapshot contract. The Host adapter is the only part tied to a DSH release.
+The reducer imports no DSH modules. The view knows only the snapshot contract. The Client adapter is the only part tied to a DSH release.
 
 ## Verification
 
