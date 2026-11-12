@@ -49,6 +49,21 @@ GitHub Actions 检查通过。GitHub Release 下载附件与本地安装包的 S
 - 未进行长会话压力测试、Host 重启后的完整恢复验证或远程主机时钟偏差测试。
 - 发布与收录状态以 GitHub Releases、npm 包页及各社区页面的实际记录为准。
 
+## 阶段 0：版本声明与双版本类型验证（2026-11-12）
+
+宿主版本声明调整为 `>=0.2.2-rc.1 <0.3.0`，全部九个直接 `@deepseek-ai/dsh-*` 开发依赖采用同一范围。声明可接受的版本不等同于已验证的版本；其他 0.2.x 版本尚未验证。
+
+GitHub Actions 使用 rc.1、rc.2 两个独立任务。每个任务先按 lockfile 安装，再将全部直接 DSH 类型包精确安装为矩阵指定版本，逐个核对实际版本，然后运行 `npm run check`、`npm test`、`npm run build` 和 `npm pack --dry-run`。安装覆盖不保存到清单或 lockfile，避免“两个任务实际检查同一版本”。
+
+| 版本 | 类型检查 | 13 项单元测试 | 构建 | 真实 DSH 运行 |
+| --- | --- | --- | --- | --- |
+| `0.2.2-rc.1` | 通过 | 通过 | 通过 | 已有 Windows 网页版验证，见前文。 |
+| `0.2.2-rc.2` | 通过 | 通过 | 通过 | 未验证；单元测试只验证状态逻辑，不启动 rc.2 Host。 |
+
+已对照两版相关 `.d.ts`：rc.2 的 `SessionSnapshot` 新增 `historyWasPartial`、`historyLoadStatus`，并移除 `subagent.parentAvailable`；本插件未使用这些字段，现有事件订阅及读取接口无需适配，`src/client.tsx` 和 `src/monitor.ts` 均未修改。
+
+两版的 `npm pack --dry-run --json` 文件路径列表均与变更前的 17 项一致，不新增运行依赖或安装包文件。本阶段不实现浪费检测、Token 归因或止损功能，不修改界面文案；仅创建分支和 PR，不合并、不覆盖既有 npm `0.1.0`。
+
 ## 演示与当前版本复核（2026-11-11）
 
 查询官方 npm registry，`@deepseek-ai/dsh` 的 `latest` 和 `next` 均为 `0.2.2-rc.1`，与当前已经实测的版本相同。本次未扩大版本兼容范围，不代表其他发行渠道、桌面版或未来版本可用。
