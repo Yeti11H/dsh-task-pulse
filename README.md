@@ -10,6 +10,10 @@
 
 工作台预览版可从上方 Release 下载完整 ZIP，内含插件、Java 服务和启动说明；已有任务状态页不需要 Java。真实 GitHub 发布流程尚未实测，修改建议不会被标记为测试通过。
 
+![约 21 秒工作台交互：批注定位、手动修改、Diff 审阅与新旧行跳转；模拟仓库与检查](docs/workbench-demo.gif)
+
+工作台录屏使用与插件相同的界面组件，仓库和检查均为模拟数据，修改由手动输入；没有调用模型、执行项目测试或发布 PR。约 21 秒，未加速；[MP4 下载](https://github.com/Yeti11H/dsh-task-pulse/releases/download/v0.2.0-preview.1/workbench-demo.mp4)。下方旧 GIF 为原任务状态页的真实 DSH 会话演示，两者验证范围不同。
+
 ![20 秒真实 DSH 会话演示：模型等待、工具调用、输出和完成](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
 约 20 秒，使用本地测试模型和延时工具录制真实 DSH 会话；展示模型等待、工具等待、接收输出和完成状态，不代表真实模型响应速度。[静态截图](docs/dsh-complete.png)。项目包名为 `dsh-task-pulse`，与他人的 `dsh-pulse` 项目无关。
