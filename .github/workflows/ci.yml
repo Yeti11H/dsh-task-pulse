@@ -6,7 +6,12 @@ permissions:
   contents: read
 jobs:
   check:
+    name: DSH ${{ matrix.dsh }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dsh: ['0.2.2-rc.1', '0.2.2-rc.2']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,6 +20,26 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org
       - run: npm ci
+      - name: Install and verify matching DSH type packages
+        env:
+          DSH_VERSION: ${{ matrix.dsh }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          import { spawnSync } from 'node:child_process';
+          const manifest = JSON.parse(readFileSync('package.json', 'utf8'));
+          const packages = Object.keys(manifest.devDependencies).filter(name => name.startsWith('@deepseek-ai/dsh-'));
+          const version = process.env.DSH_VERSION;
+          const result = spawnSync('npm', ['install', '--no-save', '--package-lock=false', '--ignore-scripts',
+            '--registry=https://registry.npmjs.org/', ...packages.map(name => `${name}@${version}`)], { stdio: 'inherit' });
+          if (result.error) throw result.error;
+          if (result.status !== 0) process.exit(result.status ?? 1);
+          for (const name of packages) {
+            const installed = JSON.parse(readFileSync(`node_modules/${name}/package.json`, 'utf8'));
+            if (installed.version !== version) throw new Error(`${name}: expected ${version}, got ${installed.version}`);
+            console.log(`${name}: ${installed.version}`);
+          }
+          NODE
       - run: npm run check
       - run: npm test
       - run: npm run build

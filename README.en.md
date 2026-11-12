@@ -12,7 +12,15 @@ The approximately 20-second recording uses a local test model and delayed tool i
 
 ## Install the preview
 
-Requires Node.js **>=24.9.0**. Tested against **DSH 0.2.2-rc.1, web profile** on Windows. Other versions and the desktop profile have not been verified.
+Requires Node.js **>=24.9.0**. This branch declares host compatibility as **`>=0.2.2-rc.1 <0.3.0`**; the declared range is broader than the versions verified below.
+
+| DSH version | Verification |
+| --- | --- |
+| `0.2.2-rc.1` | Windows web profile exercised in real DSH; type checking, 13 unit tests, and build pass. |
+| `0.2.2-rc.2` | Type checking, unit tests, and build pass; no real rc.2 DSH runtime verification. |
+| Other releases and desktop | Not verified. |
+
+CI installs every direct DSH type dependency at each matrix version before running checks. The published npm `0.1.0` package still declares exact rc.1 compatibility. This stage only opens a PR; marketplace filtering changes require a subsequent merge and package release. The commands below retain the runtime-tested installation combination.
 
 Install the published [npm package](https://www.npmjs.com/package/dsh-task-pulse):
 
