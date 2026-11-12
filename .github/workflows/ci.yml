@@ -5,6 +5,17 @@ on:
 permissions:
   contents: read
 jobs:
+  github-server:
+    name: Java GitHub companion
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - run: mvn -B -ntp -f github-server/pom.xml verify
   check:
     name: DSH ${{ matrix.dsh }}
     runs-on: ubuntu-latest

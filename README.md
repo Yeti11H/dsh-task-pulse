@@ -4,7 +4,9 @@
 
 一个轻量的 DeepSeek Harness 任务状态侧栏：看清当前活动、最近完成的操作、等待用户的状态，以及长时间没有新活动的情况。
 
-不额外调用模型，不新增后端服务，不向 Agent 注入提示词，不改变工具执行。
+已发布 `0.1.0` 的状态侧栏不额外调用模型、不新增后端服务、不向 Agent 注入提示词、不改变工具执行。
+
+**本分支新增 GitHub 代码工作台（开发中，未发布）**：复用官方 GitHub CLI 登录，在 DSH 内浏览可折叠文件树、按检查批注跳到代码行、审阅 Agent 的修改 Diff，确认后创建新分支与草稿 PR。可选 Java 17 本地服务与 `pulse_github` Host 工具独立于原状态统计。无需注册 GitHub App。[构建、配对与试用指南](docs/github-workbench.md)。
 
 ![20 秒真实 DSH 会话演示：模型等待、工具调用、输出和完成](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
@@ -16,7 +18,7 @@
 
 | DSH 版本 | 验证范围 |
 | --- | --- |
-| `0.2.2-rc.1` | Windows 网页版已实测；类型检查、13 项单元测试及构建通过。 |
+| `0.2.2-rc.1` | 原状态侧栏在 Windows 网页版已实测；工作台的验证范围见验证记录。 |
 | `0.2.2-rc.2` | 类型检查和单元测试通过，构建通过；未在真实 rc.2 DSH 中验证。 |
 | 其他版本与桌面版 | 尚未验证。 |
 
@@ -63,7 +65,9 @@ dsh plugin --profile web add ./dsh-task-pulse-0.1.0.tgz
 
 最近活动最多保留 12 条。并行工具分别显示等待时间。刷新后根据 DSH 当前提供的历史窗口重新计算，不建立第二套会话数据库。
 
-## 数据与边界
+## 状态侧栏的数据与边界
+
+以下描述只适用于任务状态统计。GitHub 工作台通过本地 Java 服务访问 GitHub；用户让 Agent 读源码时，源码与修改建议会进入 DSH 工具历史，并可能发送给配置的模型。授权权限、内存草稿与发布限制见[工作台指南](docs/github-workbench.md)。
 
 - 使用 DSH 已授权的 Session Controller 和连接状态，不新开网络端口。
 - 只在面板挂载时订阅会话事件，关闭面板后释放订阅和计时器。
@@ -101,7 +105,10 @@ src/state.ts       纯状态逻辑，不依赖 DSH
 src/monitor.ts     读取事件窗口，处理增量、重连和释放订阅
 src/client.tsx     接入 DSH 侧栏、会话和本地偏好设置
 src/view.tsx       状态卡组件
-src/index.ts       空 Host 入口；复用 DSH 现有事件桥接
+src/index.ts       可选 pulse_github Host 工具；未配置配对码时不注册
+src/github.ts      工作台协议与纯 Diff/定位逻辑
+src/github-view.tsx 仓库、代码行与建议审阅界面
+github-server/     Java 17 本地 GitHub CLI 桥接服务
 tests/            行为验证
 preview/          可交互的模拟事件预览
 ```

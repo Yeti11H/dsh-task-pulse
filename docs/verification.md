@@ -1,5 +1,32 @@
 # 验证记录
 
+## GitHub 工作台开发版（2026-11-12）
+
+此功能位于 `feature/github-workbench`，不包含在已发布 npm `0.1.0` 中。当前阶段在浪费检测阶段之上开发，原状态页保持独立；新增 Java 17 / Spring Boot 本地服务、官方 GitHub CLI 桥接、可折叠仓库树与 Diff、固定 SHA 的源码与检查批注定位、可选 Agent 读文件/提建议工具，以及用户确认后的新分支与草稿 PR 流程。详细启动步骤见 [GitHub 工作台指南](github-workbench.md)。
+
+### 自动检查
+
+- DSH `0.2.2-rc.1`、`0.2.2-rc.2` 分别精确安装全部 10 个直接 DSH 类型依赖后，`npm run check`、`npm test`、`npm run build` 和打包预演均通过。每版 43 项 Node 测试，0 失败；rc.2 只做类型检查和单元测试/构建，未在真实 rc.2 Host 中验证。
+- `mvn -B -ntp -f github-server/pom.xml verify`：17 项测试，0 失败、0 错误。覆盖真实本地 HTTP 配对、Origin/远端拒绝、分块大请求、会话绑定、原始 blob 身份、只读权限、错误文件、执行权限位、基准分支变化、旧批注与无对应文件批注排除、发布重入和部分失败恢复。
+- Node 新增测试覆盖 loopback URL、SHA 固定外链、增删行真实坐标、末尾换行/CRLF 变化、大文件 Diff 回退、可选 Host 工具的真实会话 id 与禁止发布。
+- npm 包从原来的 17 个文件增加到 18 个：新增安装包内的 `docs/github-workbench.md`，便于阅读随包文档。Java 服务不打入 npm 包，也未新增 npm 运行依赖。
+
+### 真实环境与浏览器
+
+- Windows、Node 24.16.0、Java 17、DSH rc.1 网页版、Chrome + Playwright。
+- 复用本机已登录的官方 `gh`：Java 服务实际读取账户、`Yeti11H/dsh-task-pulse` 的 main 固定提交、仓库树、package.json 及 GitHub check-runs。全程没有对该仓库执行测试写入。
+- 将本地 tarball 通过 DSH Plugin Manager 安装到独立 `DSH_HOME`，在真实 DSH 侧栏连接 Java 服务，打开源码，再从界面调用正式 Session.prompt。无 Key 的本地模型夹具通过真正注册的 `pulse_github` 工具依次执行 context/read/propose，提出 package.json 末尾换行建议；刷新后显示 Diff，新增行可跳到建议版本。切换任务状态页后草稿保留，断开连接后源码/草稿清除。没有浏览器页面异常。
+- 独立模拟预览验证仓库选择、批注到原始行、手动编辑、Diff 到新行、模拟 draft PR、重复发布按钮禁用、320px 无页面横向溢出、浅色/深色及断开清理。演示仓库、检查与发布明确标为模拟数据。
+
+### 仍未实测
+
+- 从未登录状态完成一次新的浏览器授权；当前复用已有 CLI 登录。
+- 真实 GitHub 写入、新分支与 draft PR 创建。发布流程、幂等与故障恢复只用模拟 GitHub 接口测试，不宣称真实发布成功。
+- 真实商业模型自主修复代码；本次模型为本地夹具，只验证 DSH 集成链路。工作台没有测试执行器，不能判断修改正确率。
+- macOS/Linux 运行时、桌面版、远程/HTTPS DSH、企业 GitHub、SSO 策略、服务重启后恢复草稿、长时间压力与传输故障注入。CLI 超时/输出上限通过实现与代码检查覆盖，没有单独进行真实 CLI 故障注入。
+
+以下为早期状态侧栏与阶段 0 的历史记录；测试数量和“不新增服务”的边界只对应各段所述版本。
+
 验证日期：2026-11-11。环境：Windows、Node.js 24.16.0、DSH 0.2.2-rc.1、Chrome，通过 Playwright 1.58.2 操作浏览器。
 
 ## 构建与状态逻辑
