@@ -12,6 +12,7 @@ import { createMonitor } from './monitor.ts';
 import { en, zh } from './locales.ts';
 import { PulseView } from './view.tsx';
 import { initialState } from './state.ts';
+import { GithubView } from './github-view.tsx';
 
 export const inject = ['slots', 'sidebarRightTabs', 'sessions', 'connection', 'locale', 'uiSession'];
 const NS = 'dsh-task-pulse';
@@ -43,6 +44,7 @@ export function apply(ctx: Context & { connection: ConnectionHandle }) {
     const state = useSyncExternalStore(monitor?.subscribe ?? emptySubscribe, monitor?.getSnapshot ?? emptySnapshot);
     const [now, setNow] = useState(Date.now);
     const [threshold, setThreshold] = useState(readThreshold);
+    const [section, setSection] = useState<'status' | 'repository'>('status');
     useEffect(() => {
       if (!tab.tab.visible) return;
       setNow(Date.now());
@@ -50,13 +52,19 @@ export function apply(ctx: Context & { connection: ConnectionHandle }) {
       return () => clearInterval(timer);
     }, [tab.tab.visible]);
     if (!monitor) return <p>{t('loading')}</p>;
-    return <PulseView state={state} input={{ connected: connection === 'connected', openState: session.openState,
+    return <><nav aria-label="Pulse" style={{ display: 'flex', gap: 8, padding: '12px 18px', borderBottom: '1px solid rgba(127,143,136,.2)' }}>
+      {(['status', 'repository'] as const).map(value => <button key={value} aria-pressed={section === value} onClick={() => setSection(value)}
+        style={{ font: 'inherit', color: 'inherit', background: section === value ? 'rgba(70,150,110,.15)' : 'transparent', border: '1px solid rgba(127,143,136,.25)', borderRadius: 7, padding: '6px 12px', cursor: 'pointer' }}>{t(value === 'status' ? 'ghStatusTab' : 'ghTab')}</button>)}</nav>
+      <div hidden={section !== 'repository'}><GithubView key={props.sessionId} sessionId={props.sessionId} t={t} onAsk={async text => {
+        const result = await binding!.session.prompt([{ type: 'text', text }], 'queue');
+        if (!result.ok) throw new Error(result.error.code);
+      }} /></div>{section === 'status' && <PulseView state={state} input={{ connected: connection === 'connected', openState: session.openState,
         running: session.running, waiting: !!interaction, now, quietSeconds: threshold,
         lastAgentError: session.lastAgentError ?? session.openError?.message ?? null }}
         partial={session.hasMore} threshold={threshold} onThreshold={value => {
           setThreshold(value);
           try { localStorage.setItem(SETTING, String(value)); } catch { /* In-memory preference still works. */ }
-        }} t={t} />;
+        }} t={t} />}</>;
   }
 
   ctx.effect(() => ctx.sidebarRightTabs.register({ id: NS, kind: NS, title: () => t('title'),

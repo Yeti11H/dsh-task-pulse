@@ -1,10 +1,14 @@
 # DSH Task Pulse
 
-English · [简体中文](README.md) · [Download v0.1.0](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0)
+English · [简体中文](README.md) · [Download workbench preview](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.2.0-preview.1)
 
 A small task-status sidebar for DeepSeek Harness. See observable model activity, pending tools, known user-interaction waits, recent completed work, and quiet periods.
 
-No additional model calls, backend service, prompt injection, or changes to tool execution.
+The published 0.1.0 status sidebar adds no model calls, backend service, prompt injection, or changes to tool execution.
+
+**New in `0.2.0-preview.1`: GitHub repository workbench.** Reuse official GitHub CLI login, browse a collapsible source tree inside DSH, follow check annotations to exact lines, review Agent proposals as expandable diffs, and explicitly create a new branch and draft PR. An optional Java 17 local companion and `pulse_github` Host tool are separate from status statistics. No custom GitHub App registration is required. [Install, pairing and trial guide](docs/github-workbench.md).
+
+The Release ZIP includes the plugin, Java companion and startup guide. Status-only use does not require Java. Actual GitHub publication remains unverified; proposals are never presented as test-passed changes.
 
 ![20-second DSH session: model wait, tool call, output and completion](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
@@ -16,13 +20,13 @@ Requires Node.js **>=24.9.0**. This branch declares host compatibility as **`>=0
 
 | DSH version | Verification |
 | --- | --- |
-| `0.2.2-rc.1` | Windows web profile exercised in real DSH; type checking, 13 unit tests, and build pass. |
+| `0.2.2-rc.1` | Original status sidebar exercised in Windows web DSH; workbench verification scope is documented separately. |
 | `0.2.2-rc.2` | Type checking, unit tests, and build pass; no real rc.2 DSH runtime verification. |
 | Other releases and desktop | Not verified. |
 
-CI installs every direct DSH type dependency at each matrix version before running checks. The published npm `0.1.0` package still declares exact rc.1 compatibility. This stage only opens a PR; marketplace filtering changes require a subsequent merge and package release. The commands below retain the runtime-tested installation combination.
+CI installs every direct DSH type dependency at each matrix version before running checks. Follow the [workbench guide](docs/github-workbench.md) for the new preview, which needs Java 17 and official GitHub CLI. npm previews use the `next` channel; default package installs and marketplace listings depend on the registry's default tag and directory synchronization.
 
-Install the published [npm package](https://www.npmjs.com/package/dsh-task-pulse):
+For the original status-only release, install version 0.1.0 (without the GitHub workbench):
 
 ```powershell
 npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add dsh-task-pulse@0.1.0
@@ -49,7 +53,9 @@ Restart DSH, open a session's right sidebar, add a tab, and select **Pulse · Ta
 
 ## Data and limits
 
-Uses DSH's existing authenticated session and connection bridges. The Host entry is inert. Closing the panel releases its event subscription; timers run only while the tab is visible.
+Status statistics use DSH's existing session and connection bridges. Without a configured pairing token, the optional GitHub Host adapter registers no tool. Closing the panel releases its event subscription; timers run only while the tab is visible.
+
+The new workbench accesses GitHub through a local Java companion. Source read through Agent tools and proposed changes enter normal DSH tool history and may be sent to your configured model. See the [workbench guide](docs/github-workbench.md) for account permissions, memory-only drafts and publication boundaries.
 
 Status records do not copy tool arguments, normal tool-result bodies, files, or reasoning text. Error excerpts are limited to 400 characters and mask some common credential formats. This is not a general redaction system; inspect screenshots before sharing them.
 
@@ -67,7 +73,7 @@ npm pack
 
 Run `npm run preview` for an interactive preview using simulated events and the same status-card component. It requires no DSH instance or model account.
 
-13 behavior tests cover concurrency, reused call IDs, turn outcomes, waiting precedence, quiet periods, stream events, bounded history, failure handling, session isolation, reconnect replay, and subscription cleanup. Browser integration exercised real DSH events with a keyless local model and delayed tool. See [verification details and limitations](docs/verification.md).
+Tests cover status events, replay and cleanup, waste detection, GitHub diff coordinates and optional Host tool boundaries. Java tests cover repository contexts, SHA identity, pairing, publication retries and stale revisions. See [verification details and limitations](docs/verification.md) for actual results and runtime coverage.
 
 Report issues at [GitHub Issues](https://github.com/Yeti11H/dsh-task-pulse/issues), including DSH version and expected versus observed behavior.
 

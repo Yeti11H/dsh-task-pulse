@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { PulseView } from '../src/view.tsx';
 import { initialState, reduceEvent } from '../src/state.ts';
 import { zh, type Translation } from '../src/locales.ts';
+import { GithubDemo } from './github.tsx';
 
 const t: Translation = key => zh[key as keyof typeof zh] ?? key;
 function Demo() {
@@ -26,4 +27,4 @@ function Demo() {
     <p className="demo-label">交互预览 · 使用模拟事件，不代表真实任务</p>
     <PulseView state={state} input={{ connected: mode !== 'disconnected', openState: 'open', running: !['complete', 'error'].includes(mode), waiting: mode === 'waiting', now: mode === 'quiet' ? now + 180000 : now, quietSeconds: threshold }} partial={false} threshold={threshold} onThreshold={setThreshold} t={t} /></>;
 }
-createRoot(document.getElementById('root')!).render(<Demo />);
+createRoot(document.getElementById('root')!).render(location.search.includes('github') ? <GithubDemo /> : <Demo />);
