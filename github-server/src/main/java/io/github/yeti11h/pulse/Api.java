@@ -30,7 +30,13 @@ final class Api {
         return switch (input.action()) {
             case "context" -> context;
             case "read" -> work.file(context.id(), input.path());
-            case "propose" -> work.stage(context.id(), input.path(), input.expectedSha(), input.content());
+            case "propose" -> {
+                var draft = work.stage(context.id(), input.path(), input.expectedSha(), input.content());
+                // The model already supplied the code. Return a small receipt;
+                // full before/after content belongs in the browser review API.
+                yield Map.of("contextId", draft.contextId(), "status", draft.status(), "changes", draft.changes().stream()
+                    .map(change -> Map.of("path", change.path(), "originalSha", change.originalSha())).toList());
+            }
             default -> throw new Problem("unsupported-agent-action", 400);
         };
     }

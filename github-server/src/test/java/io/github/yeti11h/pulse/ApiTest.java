@@ -48,6 +48,7 @@ class ApiTest {
                 json.createObjectNode().put("action", "propose").put("contextId", contextId).put("path", "src/App.java")
                     .put("expectedSha", WorkbenchTest.BLOB).put("content", "class App { int n; }\n").toString())).build(), HttpResponse.BodyHandlers.ofString());
         assertEquals(200, proposed.statusCode()); assertEquals(1, json.readTree(proposed.body()).path("changes").size());
+        assertFalse(proposed.body().contains("class App"), "Agent proposal receipt must not echo source text");
         assertEquals(0, ((WorkbenchTest.Fake) transport).writes);
     }
 }
