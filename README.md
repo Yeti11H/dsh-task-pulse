@@ -1,12 +1,14 @@
 # DSH Task Pulse
 
-[English](README.en.md) · 简体中文 · [下载安装包](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0)
+[English](README.en.md) · 简体中文 · [下载工作台预览版](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.2.0-preview.1)
 
 一个轻量的 DeepSeek Harness 任务状态侧栏：看清当前活动、最近完成的操作、等待用户的状态，以及长时间没有新活动的情况。
 
 已发布 `0.1.0` 的状态侧栏不额外调用模型、不新增后端服务、不向 Agent 注入提示词、不改变工具执行。
 
-**本分支新增 GitHub 代码工作台（开发中，未发布）**：复用官方 GitHub CLI 登录，在 DSH 内浏览可折叠文件树、按检查批注跳到代码行、审阅 Agent 的修改 Diff，确认后创建新分支与草稿 PR。可选 Java 17 本地服务与 `pulse_github` Host 工具独立于原状态统计。无需注册 GitHub App。[构建、配对与试用指南](docs/github-workbench.md)。
+**`0.2.0-preview.1` 新增 GitHub 代码工作台**：复用官方 GitHub CLI 登录，在 DSH 内浏览可折叠文件树、按检查批注跳到代码行、审阅 Agent 的修改 Diff，确认后创建新分支与草稿 PR。可选 Java 17 本地服务与 `pulse_github` Host 工具独立于原状态统计。无需注册 GitHub App。[安装、配对与试用指南](docs/github-workbench.md)。
+
+工作台预览版可从上方 Release 下载完整 ZIP，内含插件、Java 服务和启动说明；已有任务状态页不需要 Java。真实 GitHub 发布流程尚未实测，修改建议不会被标记为测试通过。
 
 ![20 秒真实 DSH 会话演示：模型等待、工具调用、输出和完成](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
@@ -22,9 +24,9 @@
 | `0.2.2-rc.2` | 类型检查和单元测试通过，构建通过；未在真实 rc.2 DSH 中验证。 |
 | 其他版本与桌面版 | 尚未验证。 |
 
-CI 分别安装 rc.1、rc.2 的全部直接 DSH 类型依赖再运行检查。已发布 npm `0.1.0` 的宿主声明仍是精确的 rc.1；本阶段只提交 PR，合并并发布新版本后才会影响市场筛选。下面命令保留已实测的安装组合。
+CI 分别安装 rc.1、rc.2 的全部直接 DSH 类型依赖再运行检查。工作台的完整安装步骤见[工作台指南](docs/github-workbench.md)，需要 Java 17 与官方 GitHub CLI。npm 预览版使用 `next` 渠道；按名称默认安装及插件中心的版本取决于 npm 默认渠道和目录同步，不代表工作台预览已默认启用。
 
-已发布到 [npm](https://www.npmjs.com/package/dsh-task-pulse)，可直接安装指定版本：
+只使用已发布的 `0.1.0` 状态侧栏，可安装旧版本（不含 GitHub 工作台）：
 
 ```powershell
 npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add dsh-task-pulse@0.1.0

@@ -1,7 +1,7 @@
 {
   "name": "dsh-task-pulse",
-  "version": "0.1.0",
-  "description": "A small task-status sidebar for DeepSeek Harness. See activity, waiting states, errors, and quiet periods without extra model calls.",
+  "version": "0.2.0-preview.1",
+  "description": "Task status and an optional GitHub workbench for DeepSeek Harness: browse source, review Agent proposals, and create draft PRs after confirmation.",
   "type": "module",
   "license": "MIT",
   "repository": {
@@ -22,7 +22,9 @@
     "deepseek-harness",
     "agent",
     "status",
-    "observability"
+    "observability",
+    "github",
+    "code-review"
   ],
   "engines": {
     "node": ">=24.9.0",

@@ -1,6 +1,6 @@
 # GitHub 工作台 / GitHub workbench
 
-这是 `feature/github-workbench` 的开发功能，尚未包含在 npm `dsh-task-pulse@0.1.0` 中。先从本分支构建插件与 Java 服务，再安装本地产物。已有任务状态页可以单独使用，不需要 Java 或 GitHub 登录。
+GitHub 工作台从 `0.2.0-preview.1` 起提供；旧版 `dsh-task-pulse@0.1.0` 不包含此功能。可下载 [GitHub Release](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.2.0-preview.1) 的完整 ZIP，不必自行构建 Java。已有任务状态页可以单独使用，不需要 Java 或 GitHub 登录。
 
 ## 能做什么
 
@@ -11,7 +11,7 @@
 ## 1. 准备环境
 
 - Node.js >=24.9.0、npm。
-- Java 17 或更高版本、Maven 3.8+。
+- Java 17 或更高版本。只有从源码构建时才需要 Maven 3.8+。
 - [GitHub CLI](https://cli.github.com/)。在运行 Java 服务的机器上执行官方登录：
 
 ```powershell
@@ -23,7 +23,17 @@ gh auth status --hostname github.com
 
 工作台使用 CLI 当前账户已经拥有的权限；UI 中选仓库不会缩小 GitHub 授权本身的范围。CLI 如何保存凭据由官方 CLI 与操作系统决定，不能保证其凭据存储一定加密。
 
-## 2. 构建并安装开发版插件
+## 2. 安装预览版插件
+
+下载 Release 中的 `dsh-task-pulse-0.2.0-preview.1.zip`，解压后在该目录执行：
+
+```powershell
+npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add ./dsh-task-pulse-0.2.0-preview.1.tgz
+```
+
+ZIP 内包含同版插件、Java JAR、使用说明和截图。npm 包只包含插件，不包含 Java 服务；npm 预览发布完成后也可用明确版本 `dsh-task-pulse@0.2.0-preview.1` 安装。发布状态以 [npm registry](https://www.npmjs.com/package/dsh-task-pulse?activeTab=versions) 为准，GitHub 安装包可独立使用。
+
+### 可选：从源码构建
 
 在仓库根目录执行：
 
@@ -35,17 +45,17 @@ npm run build
 npm pack
 mvn -B -ntp -f github-server/pom.xml verify
 
-npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add ./dsh-task-pulse-0.1.0.tgz
+npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add ./dsh-task-pulse-0.2.0-preview.1.tgz
 ```
 
-本地包沿用源代码版本号 `0.1.0`，内容不同于已经发布的 npm 包。不要用 npm 上的旧包验证这项开发功能。Java 服务单独构建，不在 npm 包内；可执行 JAR 位于 `github-server/target/pulse-github-0.1.0-SNAPSHOT.jar`。
+从源码构建的可执行 JAR 位于 `github-server/target/pulse-github-0.2.0-preview.1.jar`。下文按下载 ZIP 的解压目录执行；自行构建时，把启动命令中的 JAR 路径替换成该路径。
 
 ## 3. 启动本地服务
 
-终端 A，在仓库根目录执行：
+终端 A，在 ZIP 解压目录执行：
 
 ```powershell
-java -jar github-server/target/pulse-github-0.1.0-SNAPSHOT.jar --pulse.allowed-origin=http://127.0.0.1:3000
+java -jar ./pulse-github-0.2.0-preview.1.jar --pulse.allowed-origin=http://127.0.0.1:3000
 ```
 
 将 `--pulse.allowed-origin` 换成你实际打开 DSH 网页的 Origin，即地址的协议、主机和端口，不含路径。例如 `http://localhost:3000` 与 `http://127.0.0.1:3000` 是两个不同 Origin。多个值用英文逗号分隔，不支持 `*`。
@@ -53,7 +63,7 @@ java -jar github-server/target/pulse-github-0.1.0-SNAPSHOT.jar --pulse.allowed-o
 服务只监听 `127.0.0.1:43127`。启动时会打印一个随机**本地配对码**，它不是 GitHub Token。保留该终端，不要公开日志或分享配对码。若 `gh` 不在 PATH，可增加参数：
 
 ```powershell
-java -jar github-server/target/pulse-github-0.1.0-SNAPSHOT.jar --pulse.allowed-origin=http://127.0.0.1:3000 "--pulse.gh=C:/Program Files/GitHub CLI/gh.exe"
+java -jar ./pulse-github-0.2.0-preview.1.jar --pulse.allowed-origin=http://127.0.0.1:3000 "--pulse.gh=C:/Program Files/GitHub CLI/gh.exe"
 ```
 
 只浏览或手动编辑时，正常启动 DSH 即可。需要让 Agent 调用工作台时，在终端 B 设置服务刚打印的同一个配对码，再启动 DSH：
@@ -78,7 +88,7 @@ npx @deepseek-ai/dsh@0.2.2-rc.1 web
 6. 展开每个文件的 Diff。删除行跳原始版本，新增行跳建议版本；GitHub 外链始终指向原始提交。
 7. 确认修改内容和 PR 标题后点击“创建分支与草稿 PR”。它不会修改基准分支，也不会合并 PR。如果基准分支已变化，工作台会拒绝发布；重新打开快照并重新审阅修改。
 
-Agent 工具不能创建 PR。Agent 没有该工具时，检查是否重启了带 `PULSE_BRIDGE_TOKEN` 的 DSH，是否安装了本分支本地包。工作台不会自动向模型注入上下文；只有用户点击发送后才会提交请求。
+Agent 工具不能创建 PR。Agent 没有该工具时，检查是否重启了带 `PULSE_BRIDGE_TOKEN` 的 DSH，是否安装了工作台预览版。工作台不会自动向模型注入上下文；只有用户点击发送后才会提交请求。
 
 `propose` 只返回路径、原始 SHA 与草稿状态摘要，不回显全部修改前后源码，减少重复上下文。完整 Diff 由浏览器审阅接口读取。
 
@@ -95,7 +105,7 @@ Agent 工具不能创建 PR。Agent 没有该工具时，检查是否重启了�
 
 ## English quick start
 
-This feature is on the development branch, not the published npm 0.1.0 package. Install Node >=24.9, Java >=17, Maven >=3.8 and official GitHub CLI. Run `gh auth login --web --hostname github.com`, build/install the local npm tarball, and run `mvn -B -ntp -f github-server/pom.xml verify`.
+This feature is available starting with `0.2.0-preview.1`; the old 0.1.0 package does not include it. Install Node >=24.9, Java >=17 and official GitHub CLI. Download the Release ZIP, unpack it and install `./dsh-task-pulse-0.2.0-preview.1.tgz` through DSH Plugin Manager. Maven >=3.8 is needed only when building the Java companion from source. Run `gh auth login --web --hostname github.com` in your terminal.
 
 Start the JAR with `--pulse.allowed-origin=<your exact DSH browser origin>`. Pair the Pulse GitHub tab using the local token printed by the service. To enable Agent proposals, start DSH with that same `PULSE_BRIDGE_TOKEN` environment variable. No custom OAuth app is required. The service uses the active CLI account's existing permissions.
 

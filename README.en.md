@@ -1,12 +1,14 @@
 # DSH Task Pulse
 
-English · [简体中文](README.md) · [Download v0.1.0](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.1.0)
+English · [简体中文](README.md) · [Download workbench preview](https://github.com/Yeti11H/dsh-task-pulse/releases/tag/v0.2.0-preview.1)
 
 A small task-status sidebar for DeepSeek Harness. See observable model activity, pending tools, known user-interaction waits, recent completed work, and quiet periods.
 
 The published 0.1.0 status sidebar adds no model calls, backend service, prompt injection, or changes to tool execution.
 
-**New on this branch: GitHub repository workbench (unreleased).** Reuse official GitHub CLI login, browse a collapsible source tree inside DSH, follow check annotations to exact lines, review Agent proposals as expandable diffs, and explicitly create a new branch and draft PR. An optional Java 17 local companion and `pulse_github` Host tool are separate from status statistics. No custom GitHub App registration is required. [Build, pairing and trial guide](docs/github-workbench.md).
+**New in `0.2.0-preview.1`: GitHub repository workbench.** Reuse official GitHub CLI login, browse a collapsible source tree inside DSH, follow check annotations to exact lines, review Agent proposals as expandable diffs, and explicitly create a new branch and draft PR. An optional Java 17 local companion and `pulse_github` Host tool are separate from status statistics. No custom GitHub App registration is required. [Install, pairing and trial guide](docs/github-workbench.md).
+
+The Release ZIP includes the plugin, Java companion and startup guide. Status-only use does not require Java. Actual GitHub publication remains unverified; proposals are never presented as test-passed changes.
 
 ![20-second DSH session: model wait, tool call, output and completion](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
@@ -22,9 +24,9 @@ Requires Node.js **>=24.9.0**. This branch declares host compatibility as **`>=0
 | `0.2.2-rc.2` | Type checking, unit tests, and build pass; no real rc.2 DSH runtime verification. |
 | Other releases and desktop | Not verified. |
 
-CI installs every direct DSH type dependency at each matrix version before running checks. The published npm `0.1.0` package still declares exact rc.1 compatibility. This stage only opens a PR; marketplace filtering changes require a subsequent merge and package release. The commands below retain the runtime-tested installation combination.
+CI installs every direct DSH type dependency at each matrix version before running checks. Follow the [workbench guide](docs/github-workbench.md) for the new preview, which needs Java 17 and official GitHub CLI. npm previews use the `next` channel; default package installs and marketplace listings depend on the registry's default tag and directory synchronization.
 
-Install the published [npm package](https://www.npmjs.com/package/dsh-task-pulse):
+For the original status-only release, install version 0.1.0 (without the GitHub workbench):
 
 ```powershell
 npx @deepseek-ai/dsh@0.2.2-rc.1 plugin --profile web add dsh-task-pulse@0.1.0

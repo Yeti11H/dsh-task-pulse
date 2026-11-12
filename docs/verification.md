@@ -1,8 +1,8 @@
 # 验证记录
 
-## GitHub 工作台开发版（2026-11-12）
+## GitHub 工作台预览版（2026-11-12）
 
-此功能位于 `feature/github-workbench`，不包含在已发布 npm `0.1.0` 中。当前阶段在浪费检测阶段之上开发，原状态页保持独立；新增 Java 17 / Spring Boot 本地服务、官方 GitHub CLI 桥接、可折叠仓库树与 Diff、固定 SHA 的源码与检查批注定位、可选 Agent 读文件/提建议工具，以及用户确认后的新分支与草稿 PR 流程。详细启动步骤见 [GitHub 工作台指南](github-workbench.md)。
+此功能的预览版本为 `0.2.0-preview.1`，不包含在旧 npm `0.1.0` 中。当前阶段在浪费检测阶段之上开发，原状态页保持独立；新增 Java 17 / Spring Boot 本地服务、官方 GitHub CLI 桥接、可折叠仓库树与 Diff、固定 SHA 的源码与检查批注定位、可选 Agent 读文件/提建议工具，以及用户确认后的新分支与草稿 PR 流程。详细启动步骤见 [GitHub 工作台指南](github-workbench.md)。
 
 ### 自动检查
 
