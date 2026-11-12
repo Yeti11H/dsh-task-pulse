@@ -10,6 +10,10 @@ The published 0.1.0 status sidebar adds no model calls, backend service, prompt 
 
 The Release ZIP includes the plugin, Java companion and startup guide. Status-only use does not require Java. Actual GitHub publication remains unverified; proposals are never presented as test-passed changes.
 
+![21-second workbench UI recording: annotation-to-line, manual edit, diff review and old/new line navigation; simulated repository and checks](docs/workbench-demo.gif)
+
+This recording uses the same workbench component as the plugin, with simulated repository/check data and a manual edit. No model, project tests or PR publication is invoked. Approximately 21 seconds without speed-up; [download MP4](https://github.com/Yeti11H/dsh-task-pulse/releases/download/v0.2.0-preview.1/workbench-demo.mp4). The older GIF below shows the original status view in real DSH with a local test model; the verification scopes differ.
+
 ![20-second DSH session: model wait, tool call, output and completion](https://raw.githubusercontent.com/Yeti11H/dsh-task-pulse/main/docs/demo.gif)
 
 The approximately 20-second recording uses a local test model and delayed tool in a real DSH session. It demonstrates observable status transitions, not real-model response speed. [Static screenshot](docs/dsh-complete.png). This project's package is `dsh-task-pulse`; it is unrelated to the existing third-party `dsh-pulse` package.
