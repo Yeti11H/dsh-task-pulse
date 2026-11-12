@@ -1,4 +1,7 @@
-/** Pure, bounded state. It depends on no DSH, browser, or model package. */
+import { initialWaste, reduceWaste, summarizeWaste, type WasteState, type WasteSummary } from './waste.ts';
+
+/** Pure state with bounded visible activity and per-turn analysis metadata.
+ * It depends on no DSH, browser, or model package. */
 export interface Activity {
   id: string;
   kind: 'tool' | 'turn';
@@ -8,7 +11,8 @@ export interface Activity {
   outcome: 'ok' | 'error' | 'cancelled';
 }
 export interface ActiveTool { id: string; name: string; startedAt: number }
-export interface PulseState {
+export interface PulseState extends WasteSummary {
+  waste: WasteState;
   startedAt: number | null;
   lastActivityAt: number | null;
   phase: 'idle' | 'preparing' | 'model' | 'output' | 'tools' | 'complete' | 'error' | 'cancelled';
@@ -23,8 +27,9 @@ export interface PulseState {
 export const RECENT_LIMIT = 12;
 export const ACTIVE_LIMIT = 100;
 export function initialState(): PulseState {
+  const waste = initialWaste();
   return { startedAt: null, lastActivityAt: null, phase: 'idle', turn: null, step: null,
-    tools: [], approvals: [], recent: [], completedTools: 0, error: null };
+    tools: [], approvals: [], recent: [], completedTools: 0, error: null, waste, ...summarizeWaste(waste) };
 }
 function record(value: unknown): Record<string, unknown> {
   return typeof value === 'object' && value !== null ? value as Record<string, unknown> : {};
@@ -49,6 +54,12 @@ function addRecent(state: PulseState, activity: Activity): Activity[] {
 /** Accept public event envelopes defensively so unknown future event kinds
  * leave the visible state unchanged instead of breaking the host interface. */
 export function reduceEvent(state: PulseState, input: unknown): PulseState {
+  const status = reduceStatusEvent(state, input);
+  const waste = reduceWaste(state.waste, input);
+  if (status === state && waste === state.waste) return state;
+  return { ...status, waste, ...summarizeWaste(waste) };
+}
+function reduceStatusEvent(state: PulseState, input: unknown): PulseState {
   const event = record(input);
   const type = text(event.type);
   const data = record(event.data);
@@ -71,6 +82,9 @@ export function reduceEvent(state: PulseState, input: unknown): PulseState {
     }
     case 'assistant/message':
       return { ...touched, phase: state.tools.length ? 'tools' : 'preparing' };
+    case 'assistant/attempt':
+      // Durable attempts replace their transient chunks on history replay.
+      return { ...touched, phase: state.tools.length ? 'tools' : 'model' };
     case 'tool/call': {
       const id = text(data.callId);
       if (!id || state.tools.some(tool => tool.id === id)) return state;
